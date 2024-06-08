@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/calculator_background">
+
+    <LinearLayout
+        android:id="@+id/resultRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15">
+
+        <TextView
+            android:id="@+id/resultTextView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/result_height"
+            android:layout_marginStart="@dimen/m_x"
+            android:layout_marginEnd="@dimen/m_x"
+            android:background="@drawable/result_view_background"
+            android:fontFamily="@font/fa_solid_900"
+            android:gravity="end|center_vertical"
+            android:paddingTop="@dimen/p_y"
+            android:paddingEnd="@dimen/textView_padding_end"
+            android:text="0"
+            android:textSize="@dimen/result_textSize"
+            android:textColor="@color/result_text_colour"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sixthRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/fifthRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/resultRow">
+
+        <Button
+            android:id="@+id/clearButton"
+            style="@style/sub_operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="C" />
+
+        <Button
+            android:id="@+id/percentButton"
+            style="@style/sub_operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/percent" />
+
+        <Button
+            android:id="@+id/plusMinusButton"
+            style="@style/sub_operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/plus_minus" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/sub_operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/delete" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fifthRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/fourthRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sixthRow">
+
+        <Button
+            android:id="@+id/sevenButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/eightButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/nineButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/divideButton"
+            style="@style/operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/divide" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fourthRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/thirdRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fifthRow">
+
+        <Button
+            android:id="@+id/fourButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/fiveButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/sixButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/multiplyButton"
+            style="@style/operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/multiply" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/thirdRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/secondRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fourthRow">
+
+        <Button
+            android:id="@+id/oneButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="1"/>
+
+        <Button
+            android:id="@+id/twoButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/threeButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="3"/>
+
+        <Button
+            android:id="@+id/minusButton"
+            style="@style/operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/minus" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/secondRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/firstRow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/thirdRow">
+
+        <Button
+            android:id="@+id/zeroButton"
+            style="@style/number_button"
+            android:layout_width="@dimen/wide_button_width"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/decimalButton"
+            style="@style/number_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="." />
+
+        <Button
+            android:id="@+id/plusButton"
+            style="@style/operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/plus"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/firstRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/secondRow">
+
+        <Button
+            android:id="@+id/equalsButton"
+            style="@style/operator_button"
+            app:cornerRadius="@dimen/button_radius"
+            android:fontFamily="@font/fa_solid_900"
+            android:text="@string/equals" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
