@@ -51,28 +51,32 @@
             style="@style/sub_operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="C" />
+            android:text="C"
+            android:tag="clear"/>
 
         <Button
             android:id="@+id/percentButton"
             style="@style/sub_operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/percent" />
+            android:text="@string/percent"
+            android:tag="percent"/>
 
         <Button
             android:id="@+id/plusMinusButton"
             style="@style/sub_operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/plus_minus" />
+            android:text="@string/plus_minus"
+            android:tag="plus_minus"/>
 
         <Button
             android:id="@+id/deleteButton"
             style="@style/sub_operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/delete" />
+            android:text="@string/delete"
+            android:tag="delete"/>
     </LinearLayout>
 
     <LinearLayout
@@ -90,28 +94,32 @@
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="7" />
+            android:text="7"
+            android:tag="7"/>
 
         <Button
             android:id="@+id/eightButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="8" />
+            android:text="8"
+            android:tag="8"/>
 
         <Button
             android:id="@+id/nineButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="9" />
+            android:text="9"
+            android:tag="9"/>
 
         <Button
             android:id="@+id/divideButton"
             style="@style/operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/divide" />
+            android:text="@string/divide"
+            android:tag="divide"/>
     </LinearLayout>
 
     <LinearLayout
@@ -129,28 +137,32 @@
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="4" />
+            android:text="4"
+            android:tag="4"/>
 
         <Button
             android:id="@+id/fiveButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="5" />
+            android:text="5"
+            android:tag="5"/>
 
         <Button
             android:id="@+id/sixButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="6" />
+            android:text="6"
+            android:tag="6"/>
 
         <Button
             android:id="@+id/multiplyButton"
             style="@style/operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/multiply" />
+            android:text="@string/multiply"
+            android:tag="multiply"/>
     </LinearLayout>
 
     <LinearLayout
@@ -168,28 +180,32 @@
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="1"/>
+            android:text="1"
+            android:tag="1"/>
 
         <Button
             android:id="@+id/twoButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="2" />
+            android:text="2"
+            android:tag="2"/>
 
         <Button
             android:id="@+id/threeButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="3"/>
+            android:text="3"
+            android:tag="3"/>
 
         <Button
             android:id="@+id/minusButton"
             style="@style/operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/minus" />
+            android:text="@string/minus"
+            android:tag="minus"/>
     </LinearLayout>
 
     <LinearLayout
@@ -208,21 +224,24 @@
             android:layout_width="@dimen/wide_button_width"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="0" />
+            android:text="0"
+            android:tag="0"/>
 
         <Button
             android:id="@+id/decimalButton"
             style="@style/number_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="." />
+            android:text="."
+            android:tag="." />
 
         <Button
             android:id="@+id/plusButton"
             style="@style/operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/plus"/>
+            android:text="@string/plus"
+            android:tag="plus"/>
     </LinearLayout>
 
     <LinearLayout
@@ -240,7 +259,7 @@
             style="@style/operator_button"
             app:cornerRadius="@dimen/button_radius"
             android:fontFamily="@font/fa_solid_900"
-            android:text="@string/equals" />
+            android:text="@string/equals"
+            android:tag="equals"/>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
