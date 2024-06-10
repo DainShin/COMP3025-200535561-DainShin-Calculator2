@@ -3,18 +3,20 @@ package com.dain.comp3025_200535561_dainshin_calculator2
 import android.util.Log
 import com.dain.comp3025_200535561_dainshin_calculator2.databinding.ActivityMainBinding
 
-class Calculator(dataBinding: ActivityMainBinding)
-{
+class Calculator(dataBinding: ActivityMainBinding) {
     private var binding: ActivityMainBinding = dataBinding
     private var result: String
+
+    private var new: String = ""
+    private var old: String = ""
+
 
     init {
         result = ""
         createButtonReferences()
     }
 
-    private fun createButtonReferences()
-    {
+    private fun createButtonReferences() {
         val operandButtons = arrayOf(
             binding.oneButton, binding.twoButton, binding.threeButton, binding.fourButton,
             binding.fiveButton, binding.sixButton, binding.sevenButton, binding.eightButton,
@@ -24,7 +26,7 @@ class Calculator(dataBinding: ActivityMainBinding)
 
         val operatorButtons = arrayOf(
             binding.minusButton, binding.plusButton, binding.multiplyButton, binding.divideButton,
-            binding.percentButton, binding.clearButton
+            binding.percentButton, binding.clearButton, binding.equalsButton
         )
 
         operandButtons.forEach { it.setOnClickListener { operandHandler(it.tag as String) } }
@@ -33,43 +35,37 @@ class Calculator(dataBinding: ActivityMainBinding)
     }
 
     private fun operandHandler(tag: String) {
-        when(tag)
-        {
+        when (tag) {
             "." -> {
-                if(!binding.resultTextView.text.contains("."))
-                {
-                    result += if(result.isEmpty()) "0." else "."
+                if (!binding.resultTextView.text.contains(".")) {
+                    result += if (result.isEmpty()) "0." else "."
 
                     binding.resultTextView.text = result
                 }
             }
+
             "delete" -> {
                 result = result.dropLast(1)
 
-                binding.resultTextView.text = if(result.isEmpty() || result=="-") "0" else result
+                binding.resultTextView.text = if (result.isEmpty() || result == "-") "0" else result
             }
+
             "plus_minus" -> {
-                if (result.isNotEmpty() && result != "0")
-                {
-                    if (result.startsWith("-"))
-                    {
-                        result =  result.substring(1)
-                    }
-                    else
-                    {
-                       result = "-".plus(result)
+                if (result.isNotEmpty() && result != "0") {
+                    if (result.startsWith("-")) {
+                        result = result.substring(1)
+                    } else {
+                        result = "-".plus(result)
                     }
                 }
-                binding.resultTextView.text = result.ifEmpty { "0" }
+                binding.resultTextView.text = result.ifEmpty { "0" } // 수정하기
             }
+
             else -> {
 
-                if(binding.resultTextView.text == "0")
-                {
+                if (binding.resultTextView.text == "0") {
                     result = tag
-                }
-                else
-                {
+                } else {
                     result += tag
                 }
                 binding.resultTextView.text = result
@@ -77,24 +73,89 @@ class Calculator(dataBinding: ActivityMainBinding)
         }
     }
 
-    private fun operatorHandler(tag: String)
-    {
-        when (tag)
-        {
+    private fun operatorHandler(tag: String) {
+        // 연산버튼을 누르면 현재 result에 있는 값을 old에 저장
+        // result = ""
+        when (tag) {
             "clear" -> clear()
+            "plus" -> plus()
+            "minus" -> minus()
+            "multiply" -> multiply()
+            "divide" -> divide()
+            "equals" -> equals()
         }
+
     }
 
-    private fun clear()
-    {
+    private fun clear() {
+        old = ""
+        new = ""
         result = ""
         binding.resultTextView.text = "0"
+    }
+
+    private fun plus() {
+        new = result
+
+        if (old.isNotEmpty()) {
+            result = (old.toDouble() + new.toDouble()).toString()
+        }
+        binding.resultTextView.text = result
+        old = result
+        result = ""
+    }
+
+    private fun minus() {
+        new = result
+        if (old.isNotEmpty()) {
+            result = (old.toDouble() - new.toDouble()).toString()
+        }
+        binding.resultTextView.text = result
+        old = result
+        result = ""
+    }
+
+    private fun multiply() {
+        if (old.isNotEmpty()) {
+            result = (old.toDouble() * new.toDouble()).toString()
+        }
+        binding.resultTextView.text = result
+        old = result
+        result = ""
+    }
+
+    private fun divide() {
+        if (old.isNotEmpty()) {
+            result = (old.toDouble() / new.toDouble()).toString()
+        }
+        binding.resultTextView.text = result
+        old = result
+        result = ""
+    }
+
+    private fun equals() {
+        binding.resultTextView.text = old
     }
 }
 
 
 /*
-*
+   숫자 클릭 -> result 에 저장
+
+  플러스 클릭
+  -> result 값을 new로 옮김
+  -> old + new 연산
+  -> old + new = result
+  -> result 값을 old에 저장
+  -> result = ""
+
+
+마이너스 클릭
+->
+*/
+
+
+/*
 b. Write code in the Kotlin programming language that enables the backspace button to
 delete the last number entered. If all the numbers have been deleted, then they will be
 replaced by a zero. You will also have to create event handlers for the backspace Button
@@ -104,7 +165,7 @@ c. Write code in the Kotlin programming language that enables the plus/minus but
 toggle the sign of the number displayed in the Result Label to plus or minus. The
 plus/minus button will have no effect on the number zero. You will also have to create
 event handler for the plus/minus Button control in the MainActivity (4 Marks:
-Functionality) --> ok (마지막 숫자 delete -> 0) 확인하기
+Functionality) --> ok (마지막 숫자 delete -> 0)
 
 d. Write code in the Kotlin programming language that enables the Operator Buttons
 (+, -, *, /, %) to work with the operands entered through the number buttons, the plus/minus
@@ -144,10 +205,13 @@ Button control in the MainActivity (4 Marks: Functionality).  --> ok
 a. Ensure you include a comment header for your MainActivity file that indicates: the
 File name, Author's name, StudentID, Date, App description, and Version information
 (3 Marks: Internal Documentation).
+*
 b. Ensure you include a comment header for each of your methods and classes (1 Marks:
 Internal Documentation)
+
 c. Ensure your program uses contextual variable names that help make the program
 human-readable (1 Marks: Internal Documentation).
+
 d. Ensure you include inline comments that describe your code’s functionality only where
 required (1 Marks: Internal Documentation)
 * */
