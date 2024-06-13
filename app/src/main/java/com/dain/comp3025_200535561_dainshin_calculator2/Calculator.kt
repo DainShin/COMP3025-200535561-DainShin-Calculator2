@@ -8,6 +8,8 @@ class Calculator(dataBinding: ActivityMainBinding) {
     val binding = dataBinding
     var isDecimalClicked = false
     var isPlus = true
+
+    var resultStack = Stack<String>()
     var stack = Stack<String>()
 
     init {
@@ -49,64 +51,125 @@ class Calculator(dataBinding: ActivityMainBinding) {
         equalsButton.setOnClickListener { equalsHandler(it.tag.toString()) }
     }
 
+    // if equals button is clicked
     private fun equalsHandler(equals: String) {
-        // first * or /
-        var i = 0
-        while( i < stack.size) {
-            val token = stack[i]
-            if(token == "*" || token=="/")
-            {
-                var resultVal = ""
-                if(token == "*") {
-                    resultVal = (stack[i-1].toFloat() * stack[i+1].toFloat()).toString()
+
+        if(stack.isNotEmpty()) {
+            val resultString = stack.joinToString("")
+            resultStack.push(resultString)
+            // empty stack
+            isDecimalClicked = false
+            stack.clear()
+        }
+
+            //  * or /
+            var i = 0
+            while( i < resultStack.size) {
+                val operator = resultStack[i]
+                if(operator == "*" || operator=="/")
+                {
+                    var resultString = ""
+
+                    if(operator == "*") {
+                        var resultVal = (resultStack[i-1].toFloat() * resultStack[i+1].toFloat())
+
+                        if(resultVal % 1.0 == 0.0) {
+                            resultString = (resultVal.toInt()).toString()
+                        }
+                        else
+                        {
+                            resultString = resultVal.toString()
+                        }
+                    }
+                    else if(operator == "/") {
+                        var resultVal = (resultStack[i-1].toFloat() / resultStack[i+1].toFloat())
+
+                        if(resultVal % 1.0 == 0.0) {
+                            resultString = (resultVal.toInt()).toString()
+                        }
+                        else
+                        {
+                            resultString = resultVal.toString()
+                        }
+                    }
+
+                    resultStack[i-1] = resultString
+                    resultStack.removeAt(i)
+                    resultStack.removeAt(i)
+
+                    i--
                 }
-                else if(token == "/") {
-                    resultVal = (stack[i-1].toFloat() / stack[i+1].toFloat()).toString()
+                else {
+                    i ++
                 }
 
-                stack[i-1] = resultVal
-                stack.removeAt(i)
-                stack.removeAt(i)
-
-                i--
             }
-            else {
-                i ++
+
+            // + or -
+        var j = 0
+        while (j < resultStack.size) {
+            val operator = resultStack[j]
+            if (operator == "+" || operator == "-") {
+                var resultString = ""
+
+                if (operator == "+") {
+                    val resultVal = resultStack[j - 1].toFloat() + resultStack[j + 1].toFloat()
+                    resultString = if (resultVal % 1.0 == 0.0) {
+                        resultVal.toInt().toString()
+                    } else {
+                        resultVal.toString()
+                    }
+                } else if (operator == "-") {
+                    val resultVal = resultStack[j - 1].toFloat() - resultStack[j + 1].toFloat()
+                    resultString = if (resultVal % 1.0 == 0.0) {
+                        resultVal.toInt().toString()
+                    } else {
+                        resultVal.toString()
+                    }
+                }
+
+                resultStack[j - 1] = resultString
+                resultStack.removeAt(j)
+                resultStack.removeAt(j)
+
+                j--
+            } else {
+                j++
             }
         }
 
-        // and + or -
-        var n = 0
-        while( n <stack.size ) {
-            val token = stack[n]
-            if(token == "+" || token == "-")
-            {
-                var resultVal = ""
-                if(token == "+") {
-                    resultVal = (stack[n-1].toFloat() + stack[n+1].toFloat()).toString()
-                } else {
-                    resultVal = (stack[n-1].toFloat() - stack[n+1].toFloat()).toString()
-                }
-
-                stack[n-1] = resultVal
-                stack.removeAt(n)
-                stack.removeAt(n)
-
-                n--
-            }
-            else {
-                n ++
-            }
-        }
+        binding.resultTextView.text = resultStack.pop()
     }
 
+    // numbers and operators will be in the stack
     private fun operatorHandler(operator: String) {
-       when(operator){
-           "plus" -> stack.push("+")
-           "minus" -> stack.push("-")
-           "multiply" -> stack.push("*")
-           "divide" -> stack.push("/")
-       }
+        // enter the number and press the operator
+        // -> copy stack value to resultStack
+        // -> empty stack
+
+        // copy stack value to resultStack
+        if(stack.isNotEmpty()) {
+            val resultString = stack.joinToString("")
+            resultStack.push(resultString)
+            // empty stack
+            isDecimalClicked = false
+            stack.clear()
+        }
+
+
+        // if the previous value is an operator, call pop() and store the new oprator
+        if(resultStack.peek() == "+" || resultStack.peek() == "-" || resultStack.peek() == "*" || resultStack.peek() == "/")
+        {
+            resultStack.pop()
+        }
+
+        when(operator){
+            "plus" -> resultStack.push("+")
+            "minus" -> resultStack.push("-")
+            "multiply" -> resultStack.push("*")
+            "divide" -> resultStack.push("/")
+        }
+        updateResultView()
     }
 
     private fun numberHandler(num: String) {
@@ -174,16 +237,13 @@ class Calculator(dataBinding: ActivityMainBinding) {
             isDecimalClicked = false
         } else {
             val resultText = stack.joinToString("")
-            binding.resultTextView.text =
-                if (!isPlus) "-$resultText" else resultText
+            binding.resultTextView.text = if (!isPlus) "-$resultText" else resultText
             isDecimalClicked = stack.contains(".")
         }
     }
 }
 
-/*
-   operator
-*/
+
 
 
 /*
@@ -245,4 +305,19 @@ human-readable (1 Marks: Internal Documentation).
 
 d. Ensure you include inline comments that describe your code’s functionality only where
 required (1 Marks: Internal Documentation)
+* */
+
+
+
+/*
+
+// 스택들...
+var stack = Stack<String>()
+var resultStack = Stack<String>()
+
+// 만약 현재 스택의 로직이 완성이 되면 resultStack으로 push
+
+
+
+
 * */
