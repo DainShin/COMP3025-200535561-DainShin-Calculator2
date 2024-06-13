@@ -2,156 +2,162 @@ package com.dain.comp3025_200535561_dainshin_calculator2
 
 import android.util.Log
 import com.dain.comp3025_200535561_dainshin_calculator2.databinding.ActivityMainBinding
+import java.util.Stack
 
 class Calculator(dataBinding: ActivityMainBinding) {
-    private var binding: ActivityMainBinding = dataBinding
-    private var result: String
-
-    private var new: String = ""
-    private var old: String = ""
-
+    val binding = dataBinding
+    var isDecimalClicked = false
+    var isPlus = true
+    var stack = Stack<String>()
 
     init {
-        result = ""
         createButtonReferences()
     }
 
     private fun createButtonReferences() {
         val operandButtons = arrayOf(
-            binding.oneButton, binding.twoButton, binding.threeButton, binding.fourButton,
-            binding.fiveButton, binding.sixButton, binding.sevenButton, binding.eightButton,
-            binding.nineButton, binding.zeroButton, binding.plusMinusButton, binding.decimalButton,
-            binding.deleteButton
+            binding.plusMinusButton, binding.deleteButton, binding.clearButton
         )
 
-        val operatorButtons = arrayOf(
-            binding.minusButton, binding.plusButton, binding.multiplyButton, binding.divideButton,
-            binding.percentButton, binding.clearButton, binding.equalsButton
+        val numberButtons = arrayOf(
+            binding.oneButton,
+            binding.twoButton,
+            binding.threeButton,
+            binding.fourButton,
+            binding.fiveButton,
+            binding.sixButton,
+            binding.sevenButton,
+            binding.eightButton,
+            binding.nineButton,
+            binding.zeroButton,
+            binding.decimalButton
         )
 
-        operandButtons.forEach { it.setOnClickListener { operandHandler(it.tag as String) } }
+        val operatorButtons = arrayOf (
+            binding.plusButton,
+            binding.minusButton,
+            binding.divideButton,
+            binding.multiplyButton,
+            //binding.percentButton
+        )
 
-        operatorButtons.forEach { it.setOnClickListener { operatorHandler(it.tag as String) } }
+        val equalsButton = binding.equalsButton
+
+        operandButtons.forEach { it.setOnClickListener { operandHandler(it.tag.toString()) } }
+        numberButtons.forEach { it.setOnClickListener { numberHandler(it.tag.toString()) } }
+        operatorButtons.forEach {  it.setOnClickListener {operatorHandler(it.tag.toString())}}
+        equalsButton.setOnClickListener { equalsHandler(it.tag.toString()) }
+    }
+
+    private fun equalsHandler(equals: String) {
+        var i = 0
+        while( i < stack.size) {
+            val token = stack[i]
+            if(token == "*" || token=="/")
+            {
+                var resultVal = ""
+                if(token == "*") {
+                    resultVal = (stack[i-1].toFloat() * stack[i+1].toFloat()).toString()
+                }
+                else if(token == "/") {
+                    resultVal = (stack[i-1].toFloat() / stack[i+1].toFloat()).toString()
+                }
+
+                stack[i-1] = resultVal
+                stack.removeAt(i)
+                stack.removeAt(i)
+
+                i--
+            }
+            else {
+                i ++
+            }
+        }
+    }
+
+    private fun operatorHandler(operator: String) {
+       when(operator){
+           "plus" -> stack.push("+")
+           "minus" -> stack.push("-")
+           "multiply" -> stack.push("*")
+           "divide" -> stack.push("/")
+       }
+    }
+
+    private fun numberHandler(num: String) {
+        if (num == "." && isDecimalClicked) {
+            return
+        }
+
+        if (stack.isEmpty()) {
+            if (num == ".") {
+                stack.push("0.")
+                isDecimalClicked = true
+            } else {
+                stack.push(num)
+            }
+        } else if (stack.size == 1 && stack.peek() == "0" && num != "0" && num != ".") {
+            stack.pop()
+            stack.push(num)
+        } else {
+            if (num == "." && !isDecimalClicked) {
+                stack.push(num)
+                isDecimalClicked = true
+            } else if (num != "." || (num == "." && !stack.peek().contains("."))) {
+                stack.push(num)
+            }
+        }
+        updateResultView()
     }
 
     private fun operandHandler(tag: String) {
         when (tag) {
-            "." -> {
-                if (!binding.resultTextView.text.contains(".")) {
-                    result += if (result.isEmpty()) "0." else "."
-
-                    binding.resultTextView.text = result
+            "delete" -> {
+                if (binding.resultTextView.text == "0") {
+                    isPlus = true
                 }
+                if (stack.peek() == ".") {
+                    isDecimalClicked = false
+                }
+                stack.pop()
+                updateResultView()
             }
 
-            "delete" -> {
-                result = result.dropLast(1)
-
-                binding.resultTextView.text = if (result.isEmpty() || result == "-") "0" else result
+            "clear" -> {
+                stack.clear()
+                isDecimalClicked = false
+                isPlus = true
+                updateResultView()
             }
 
             "plus_minus" -> {
-                if (result.isNotEmpty() && result != "0") {
-                    if (result.startsWith("-")) {
-                        result = result.substring(1)
-                    } else {
-                        result = "-".plus(result)
-                    }
-                }
-                binding.resultTextView.text = result.ifEmpty { "0" } // 수정하기
-            }
-
-            else -> {
-
-                if (binding.resultTextView.text == "0") {
-                    result = tag
+                if (binding.resultTextView.text != "0") {
+                    isPlus = !isPlus
                 } else {
-                    result += tag
+                    isPlus = true
                 }
-                binding.resultTextView.text = result
+                updateResultView()
             }
         }
     }
 
-    private fun operatorHandler(tag: String) {
-        // 연산버튼을 누르면 현재 result에 있는 값을 old에 저장
-        // result = ""
-        when (tag) {
-            "clear" -> clear()
-            "plus" -> plus()
-            "minus" -> minus()
-            "multiply" -> multiply()
-            "divide" -> divide()
-            "equals" -> equals()
+    // update result view screen
+    private fun updateResultView() {
+        if (stack.isEmpty()) {
+            binding.resultTextView.text = "0"
+            isPlus = true
+            isDecimalClicked = false
+        } else {
+            val resultText = stack.joinToString("")
+            binding.resultTextView.text =
+                if (!isPlus) "-$resultText" else resultText
+            isDecimalClicked = stack.contains(".")
         }
-
-    }
-
-    private fun clear() {
-        old = ""
-        new = ""
-        result = ""
-        binding.resultTextView.text = "0"
-    }
-
-    private fun plus() {
-        new = result
-
-        if (old.isNotEmpty()) {
-            result = (old.toDouble() + new.toDouble()).toString()
-        }
-        binding.resultTextView.text = result
-        old = result
-        result = ""
-    }
-
-    private fun minus() {
-        new = result
-        if (old.isNotEmpty()) {
-            result = (old.toDouble() - new.toDouble()).toString()
-        }
-        binding.resultTextView.text = result
-        old = result
-        result = ""
-    }
-
-    private fun multiply() {
-        if (old.isNotEmpty()) {
-            result = (old.toDouble() * new.toDouble()).toString()
-        }
-        binding.resultTextView.text = result
-        old = result
-        result = ""
-    }
-
-    private fun divide() {
-        if (old.isNotEmpty()) {
-            result = (old.toDouble() / new.toDouble()).toString()
-        }
-        binding.resultTextView.text = result
-        old = result
-        result = ""
-    }
-
-    private fun equals() {
-        binding.resultTextView.text = old
     }
 }
 
-
 /*
-   숫자 클릭 -> result 에 저장
-
-  플러스 클릭
-  -> result 값을 new로 옮김
-  -> old + new 연산
-  -> old + new = result
-  -> result 값을 old에 저장
-  -> result = ""
-
-
-마이너스 클릭
-->
+   operator
 */
 
 
@@ -178,8 +184,8 @@ the ‘+’ operation. We can also see this as the addition function taking two 
 and returning the result. Write one or more evaluation functions to create this logic.
 (22 Marks: Functionality).
 
-e. Your evaluation functions must include logic for compound calculations in a series. For
-example, a user could select “1 + 2 / 3.5 * 5 =” in a series which will return “3.85714285”.
+e. Your evaluation functions must include logic for compound calculations in a series.
+For example, a user could select “1 + 2 / 3.5 * 5 =” in a series which will return “3.85714285”.
 Your function must respect order of operations (AKA operator precedence or BEDMAS).
 Important Note: you may not use a built-in evaluation function, library or framework or
 code from the internet for this functionality (15 Marks: Functionality).
