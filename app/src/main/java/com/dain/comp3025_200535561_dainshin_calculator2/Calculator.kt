@@ -50,6 +50,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
     }
 
     private fun equalsHandler(equals: String) {
+        // first * or /
         var i = 0
         while( i < stack.size) {
             val token = stack[i]
@@ -71,6 +72,30 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
             else {
                 i ++
+            }
+        }
+
+        // and + or -
+        var n = 0
+        while( n <stack.size ) {
+            val token = stack[n]
+            if(token == "+" || token == "-")
+            {
+                var resultVal = ""
+                if(token == "+") {
+                    resultVal = (stack[n-1].toFloat() + stack[n+1].toFloat()).toString()
+                } else {
+                    resultVal = (stack[n-1].toFloat() - stack[n+1].toFloat()).toString()
+                }
+
+                stack[n-1] = resultVal
+                stack.removeAt(n)
+                stack.removeAt(n)
+
+                n--
+            }
+            else {
+                n ++
             }
         }
     }
