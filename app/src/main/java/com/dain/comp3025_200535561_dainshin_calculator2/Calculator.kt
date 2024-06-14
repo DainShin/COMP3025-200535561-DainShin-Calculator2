@@ -44,12 +44,29 @@ class Calculator(dataBinding: ActivityMainBinding) {
         )
 
         val equalsButton = binding.equalsButton
+        val percentButton = binding.percentButton
 
         operandButtons.forEach { it.setOnClickListener { operandHandler(it.tag.toString()) } }
         numberButtons.forEach { it.setOnClickListener { numberHandler(it.tag.toString()) } }
         operatorButtons.forEach { it.setOnClickListener { operatorHandler(it.tag.toString()) } }
         equalsButton.setOnClickListener { equalsHandler() }
+        percentButton.setOnClickListener { percentHandler() }
+
     }
+
+    private fun percentHandler() {
+        if(stack.isNotEmpty()) {
+
+            val resultString = stack.joinToString("")
+            val resultFloat = resultString.toFloat() * 0.01
+
+            stack.clear()
+            stack.push(resultFloat.toString())
+
+            updateResultView()
+        }
+    }
+
 
     // if equals button is clicked
     private fun equalsHandler() {
