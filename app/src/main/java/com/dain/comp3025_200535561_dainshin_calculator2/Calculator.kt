@@ -9,8 +9,8 @@ class Calculator(dataBinding: ActivityMainBinding) {
     var isDecimalClicked = false
     var isPlus = true
 
-    var resultStack = Stack<String>()
-    var stack = Stack<String>()
+    var resultStack = Stack<String>()  // each value will be stored in this stack
+    var stack = Stack<String>()   // the value  before an operator button is clicked
 
     init {
         createButtonReferences()
@@ -35,7 +35,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             binding.decimalButton
         )
 
-        val operatorButtons = arrayOf (
+        val operatorButtons = arrayOf(
             binding.plusButton,
             binding.minusButton,
             binding.divideButton,
@@ -47,14 +47,14 @@ class Calculator(dataBinding: ActivityMainBinding) {
 
         operandButtons.forEach { it.setOnClickListener { operandHandler(it.tag.toString()) } }
         numberButtons.forEach { it.setOnClickListener { numberHandler(it.tag.toString()) } }
-        operatorButtons.forEach {  it.setOnClickListener {operatorHandler(it.tag.toString())}}
-        equalsButton.setOnClickListener { equalsHandler(it.tag.toString()) }
+        operatorButtons.forEach { it.setOnClickListener { operatorHandler(it.tag.toString()) } }
+        equalsButton.setOnClickListener { equalsHandler() }
     }
 
     // if equals button is clicked
-    private fun equalsHandler(equals: String) {
+    private fun equalsHandler() {
 
-        if(stack.isNotEmpty()) {
+        if (stack.isNotEmpty()) {
             val resultString = stack.joinToString("")
             resultStack.push(resultString)
             // empty stack
@@ -62,50 +62,42 @@ class Calculator(dataBinding: ActivityMainBinding) {
             stack.clear()
         }
 
-            //  * or /
-            var i = 0
-            while( i < resultStack.size) {
-                val operator = resultStack[i]
-                if(operator == "*" || operator=="/")
-                {
-                    var resultString = ""
+        //  * or /
+        var i = 0
+        while (i < resultStack.size) {
+            val operator = resultStack[i]
+            if (operator == "*" || operator == "/") {
+                var resultString = ""
 
-                    if(operator == "*") {
-                        var resultVal = (resultStack[i-1].toFloat() * resultStack[i+1].toFloat())
+                if (operator == "*") {
+                    var resultVal = (resultStack[i - 1].toFloat() * resultStack[i + 1].toFloat())
 
-                        if(resultVal % 1.0 == 0.0) {
-                            resultString = (resultVal.toInt()).toString()
-                        }
-                        else
-                        {
-                            resultString = resultVal.toString()
-                        }
+                    if (resultVal % 1.0 == 0.0) {
+                        resultString = (resultVal.toInt()).toString()
+                    } else {
+                        resultString = resultVal.toString()
                     }
-                    else if(operator == "/") {
-                        var resultVal = (resultStack[i-1].toFloat() / resultStack[i+1].toFloat())
+                } else {
+                    var resultVal = (resultStack[i - 1].toFloat() / resultStack[i + 1].toFloat())
 
-                        if(resultVal % 1.0 == 0.0) {
-                            resultString = (resultVal.toInt()).toString()
-                        }
-                        else
-                        {
-                            resultString = resultVal.toString()
-                        }
+                    if (resultVal % 1.0 == 0.0) {
+                        resultString = (resultVal.toInt()).toString()
+                    } else {
+                        resultString = resultVal.toString()
                     }
-
-                    resultStack[i-1] = resultString
-                    resultStack.removeAt(i)
-                    resultStack.removeAt(i)
-
-                    i--
-                }
-                else {
-                    i ++
                 }
 
+                resultStack[i - 1] = resultString
+                resultStack.removeAt(i)
+                resultStack.removeAt(i)
+
+                i--
+            } else {
+                i++
             }
+        }
 
-            // + or -
+        // + or -
         var j = 0
         while (j < resultStack.size) {
             val operator = resultStack[j]
@@ -119,7 +111,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
                     } else {
                         resultVal.toString()
                     }
-                } else if (operator == "-") {
+                } else {
                     val resultVal = resultStack[j - 1].toFloat() - resultStack[j + 1].toFloat()
                     resultString = if (resultVal % 1.0 == 0.0) {
                         resultVal.toInt().toString()
@@ -138,7 +130,9 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
         }
 
-        binding.resultTextView.text = resultStack.pop()
+        /*binding.resultTextView.text = resultStack.pop()*/
+        var result = resultStack.peek()
+        binding.resultTextView.text = result
     }
 
     // numbers and operators will be in the stack
@@ -148,7 +142,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
         // -> empty stack
 
         // copy stack value to resultStack
-        if(stack.isNotEmpty()) {
+        if (stack.isNotEmpty()) {
             val resultString = stack.joinToString("")
             resultStack.push(resultString)
             // empty stack
@@ -157,13 +151,12 @@ class Calculator(dataBinding: ActivityMainBinding) {
         }
 
 
-        // if the previous value is an operator, call pop() and store the new oprator
-        if(resultStack.peek() == "+" || resultStack.peek() == "-" || resultStack.peek() == "*" || resultStack.peek() == "/")
-        {
+        // if the previous value is an operator, call pop() and store the new operator
+        if (resultStack.peek() == "+" || resultStack.peek() == "-" || resultStack.peek() == "*" || resultStack.peek() == "/") {
             resultStack.pop()
         }
 
-        when(operator){
+        when (operator) {
             "plus" -> resultStack.push("+")
             "minus" -> resultStack.push("-")
             "multiply" -> resultStack.push("*")
@@ -197,6 +190,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
         }
         updateResultView()
     }
+
 
     private fun operandHandler(tag: String) {
         when (tag) {
@@ -242,8 +236,6 @@ class Calculator(dataBinding: ActivityMainBinding) {
         }
     }
 }
-
-
 
 
 /*
@@ -306,7 +298,6 @@ human-readable (1 Marks: Internal Documentation).
 d. Ensure you include inline comments that describe your code’s functionality only where
 required (1 Marks: Internal Documentation)
 * */
-
 
 
 /*
