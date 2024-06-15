@@ -189,28 +189,31 @@ class Calculator(dataBinding: ActivityMainBinding) {
     }
 
     private fun numberHandler(num: String) {
-        if (num == "." && isDecimalClicked) {
-            return
+        if(stack.size < 11) {
+            if (num == "." && isDecimalClicked) {
+                return
+            }
+
+            if (stack.isEmpty()) {
+                if (num == ".") {
+                    stack.push("0.")
+                    isDecimalClicked = true
+                } else {
+                    stack.push(num)
+                }
+            } else if (stack.size == 1 && stack.peek() == "0" && num != "0" && num != ".") {
+                stack.pop()
+                stack.push(num)
+            } else {
+                if (num == "." && !isDecimalClicked) {
+                    stack.push(num)
+                    isDecimalClicked = true
+                } else if (num != "." || (num == "." && !stack.peek().contains("."))) {
+                    stack.push(num)
+                }
+            }
         }
 
-        if (stack.isEmpty()) {
-            if (num == ".") {
-                stack.push("0.")
-                isDecimalClicked = true
-            } else {
-                stack.push(num)
-            }
-        } else if (stack.size == 1 && stack.peek() == "0" && num != "0" && num != ".") {
-            stack.pop()
-            stack.push(num)
-        } else {
-            if (num == "." && !isDecimalClicked) {
-                stack.push(num)
-                isDecimalClicked = true
-            } else if (num != "." || (num == "." && !stack.peek().contains("."))) {
-                stack.push(num)
-            }
-        }
         updateResultView()
         updateProcessView()
     }
@@ -296,11 +299,7 @@ the ‘+’ operation. We can also see this as the addition function taking two 
 and returning the result. Write one or more evaluation functions to create this logic.
 (22 Marks: Functionality). --> ok
 
-e. Your evaluation functions must include logic for compound calculations in a series.
-For example, a user could select “1 + 2 / 3.5 * 5 =” in a series which will return “3.85714285”.
-Your function must respect order of operations (AKA operator precedence or BEDMAS).
-Important Note: you may not use a built-in evaluation function, library or framework or
-code from the internet for this functionality (15 Marks: Functionality). --> ok
+
 
 f. Floating point numbers should be accurate to at least 8 decimal places. Integers should
 be represented as integers. This means if your calculation includes both floating point
@@ -335,15 +334,3 @@ required (1 Marks: Internal Documentation)
 * */
 
 
-/*
-
-// 스택들...
-var stack = Stack<String>()
-var resultStack = Stack<String>()
-
-// 만약 현재 스택의 로직이 완성이 되면 resultStack으로 push
-
-
-
-
-* */
