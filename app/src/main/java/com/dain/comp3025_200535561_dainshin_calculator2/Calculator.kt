@@ -76,7 +76,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             resultStack.push(resultString)
             // empty stack
             isDecimalClicked = false
-            stack.clear()
+            stack.empty()
         }
 
         //  * or /
@@ -147,9 +147,10 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
         }
 
-        /*binding.resultTextView.text = resultStack.pop()*/
         var result = resultStack.peek()
         binding.resultTextView.text = result
+        stack.clear()
+        stack.push(result)
     }
 
     // numbers and operators will be in the stack
@@ -230,10 +231,17 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
 
             "plus_minus" -> {
-                if (binding.resultTextView.text != "0") {
-                    isPlus = !isPlus
-                } else {
-                    isPlus = true
+                isPlus = !isPlus
+
+                if (stack.isNotEmpty()) {
+                    val stringValue = stack.joinToString("")
+                    if (isPlus == false) {
+                        stack.clear()
+                        stack.push("-$stringValue")
+                    } else {
+                        stack.clear()
+                        stack.push(stringValue)
+                    }
                 }
                 updateResultView()
             }
@@ -247,9 +255,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             isPlus = true
             isDecimalClicked = false
         } else {
-            val resultText = stack.joinToString("")
-            binding.resultTextView.text = if (!isPlus) "-$resultText" else resultText
-            isDecimalClicked = stack.contains(".")
+            binding.resultTextView.text = stack.joinToString("")
         }
     }
 }
@@ -276,19 +282,19 @@ in the expression 1 + 2 = 3 the left most operand is ‘1’ the operator is the
 right most operand is ‘2’. The value ‘3’ to the right of the equal symbol is the result of
 the ‘+’ operation. We can also see this as the addition function taking two parameters
 and returning the result. Write one or more evaluation functions to create this logic.
-(22 Marks: Functionality).
+(22 Marks: Functionality). --> ok
 
 e. Your evaluation functions must include logic for compound calculations in a series.
 For example, a user could select “1 + 2 / 3.5 * 5 =” in a series which will return “3.85714285”.
 Your function must respect order of operations (AKA operator precedence or BEDMAS).
 Important Note: you may not use a built-in evaluation function, library or framework or
-code from the internet for this functionality (15 Marks: Functionality).
+code from the internet for this functionality (15 Marks: Functionality). --> ok
 
 f. Floating point numbers should be accurate to at least 8 decimal places. Integers should
 be represented as integers. This means if your calculation includes both floating point
 numbers and integers and the result is an integer your function should be flexible
 enough to remove any extraneous decimal precision (e.g. if your expression is 1.2 - 2.2
-this should evaluate to a value of -1 not -1.0). (5 Marks: Functionality).
+this should evaluate to a value of -1 not -1.0). (5 Marks: Functionality). --> ok
 
 g. A Result Label or other Suitable UI Control displays the results of any calculation the
 user desires using the Number Buttons, Decimal point button and Operator Buttons.
