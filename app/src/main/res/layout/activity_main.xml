@@ -19,20 +19,40 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.15">
 
-        <TextView
-            android:id="@+id/resultTextView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/result_height"
-            android:layout_marginStart="@dimen/m_x"
-            android:layout_marginEnd="@dimen/m_x"
-            android:background="@drawable/result_view_background"
-            android:fontFamily="@font/fa_solid_900"
-            android:gravity="end|center_vertical"
-            android:paddingTop="@dimen/p_y"
-            android:paddingEnd="@dimen/textView_padding_end"
-            android:text="0"
-            android:textSize="@dimen/result_textSize"
-            android:textColor="@color/result_text_colour"/>
+            android:layout_height="match_parent">
+
+
+
+            <TextView
+                android:id="@+id/resultTextView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/result_height"
+                android:layout_marginStart="@dimen/m_x"
+                android:layout_marginEnd="@dimen/m_x"
+                android:background="@drawable/result_view_background"
+                android:fontFamily="@font/fa_solid_900"
+                android:gravity="end|center_vertical"
+                android:paddingTop="@dimen/p_y"
+                android:paddingEnd="@dimen/textView_padding_end"
+                android:text="0"
+                android:textColor="@color/result_text_colour"
+                android:textSize="@dimen/result_textSize" />
+
+            <TextView
+                android:id="@+id/processTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingEnd="16dp"
+                android:text=""
+                android:textColor="@color/result_text_colour"
+                android:textSize="30sp"
+
+                />
+        </FrameLayout>
+
 
     </LinearLayout>
 

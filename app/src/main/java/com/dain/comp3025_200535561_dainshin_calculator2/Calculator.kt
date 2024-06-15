@@ -64,6 +64,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             stack.push(resultFloat.toString())
 
             updateResultView()
+            updateProcessView()
         }
     }
 
@@ -76,7 +77,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             resultStack.push(resultString)
             // empty stack
             isDecimalClicked = false
-            stack.empty()
+            stack.clear()
         }
 
         //  * or /
@@ -147,10 +148,13 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
         }
 
+        stack.clear()
         var result = resultStack.peek()
         binding.resultTextView.text = result
-        stack.clear()
         stack.push(result)
+        resultStack.clear()
+        updateProcessView()
+
     }
 
     // numbers and operators will be in the stack
@@ -181,6 +185,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             "divide" -> resultStack.push("/")
         }
         updateResultView()
+        updateProcessView()
     }
 
     private fun numberHandler(num: String) {
@@ -207,6 +212,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
         }
         updateResultView()
+        updateProcessView()
     }
 
 
@@ -220,14 +226,13 @@ class Calculator(dataBinding: ActivityMainBinding) {
                     isDecimalClicked = false
                 }
                 stack.pop()
-                updateResultView()
             }
 
             "clear" -> {
                 stack.clear()
+                resultStack.clear()
                 isDecimalClicked = false
                 isPlus = true
-                updateResultView()
             }
 
             "plus_minus" -> {
@@ -243,9 +248,11 @@ class Calculator(dataBinding: ActivityMainBinding) {
                         stack.push(stringValue)
                     }
                 }
-                updateResultView()
+
             }
         }
+        updateResultView()
+        updateProcessView()
     }
 
     // update result view screen
@@ -258,6 +265,11 @@ class Calculator(dataBinding: ActivityMainBinding) {
             binding.resultTextView.text = stack.joinToString("")
         }
     }
+
+    private fun updateProcessView() {
+        binding.processTextView.text = resultStack.joinToString("")
+    }
+
 }
 
 
