@@ -28,7 +28,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
      * This function creates a list of buttons and calls the event handler corresponding to each button's functionality
      */
     private fun createButtonReferences() {
-        val operandButtons = arrayOf(
+        val subOperatorButtons = arrayOf(
             binding.plusMinusButton, binding.deleteButton, binding.clearButton
         )
 
@@ -57,7 +57,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
         val equalsButton = binding.equalsButton
         val percentButton = binding.percentButton
 
-        operandButtons.forEach { it.setOnClickListener { subOperatorHandler(it.tag.toString()) } }
+        subOperatorButtons.forEach { it.setOnClickListener { subOperatorHandler(it.tag.toString()) } }
         numberButtons.forEach { it.setOnClickListener { numberHandler(it.tag.toString()) } }
         operatorButtons.forEach { it.setOnClickListener { operatorHandler(it.tag.toString()) } }
         equalsButton.setOnClickListener { equalsHandler() }
