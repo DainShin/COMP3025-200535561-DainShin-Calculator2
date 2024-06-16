@@ -24,10 +24,8 @@ class MainActivity : AppCompatActivity() {
 
     var isDecimalClicked = false
     var isPlus = true
-
     var resultStack = Stack<String>()  // each value will be stored in this stack
     var stack = Stack<String>()   // the value  before an operator button is clicked
-
     var eightDecimal = DecimalFormat("#.########") // this is for representing 8 decimal places
 
 
@@ -101,7 +99,7 @@ class MainActivity : AppCompatActivity() {
      * This function converts numbers into percentages.
      */
     private fun percentHandler() {
-        if(stack.isNotEmpty()) {
+        if (stack.isNotEmpty()) {
 
             val resultString = stack.joinToString("")
             val resultFloat = resultString.toFloat() * 0.01
@@ -239,7 +237,7 @@ class MainActivity : AppCompatActivity() {
      * @param {num} [String]
      */
     private fun numberHandler(num: String) {
-        if(stack.size < 11) {
+        if (stack.size < 11) {
             if (num == "." && isDecimalClicked) {
                 return
             }
@@ -279,10 +277,21 @@ class MainActivity : AppCompatActivity() {
                 if (binding.resultTextView.text == "0") {
                     isPlus = true
                 }
-                if (stack.peek() == ".") {
-                    isDecimalClicked = false
+                if (stack.isNotEmpty()) {
+                    val lastValue = stack.pop()
+                    if (lastValue == ".") {
+                        isDecimalClicked = false
+
+                        if (stack.size == 2 && stack[0] == "-" && stack[1] == "0") {
+                            stack.clear()
+                        }
+
+                    } else if (stack.contains("-") && stack.size == 1) {
+                       stack.clear()
+                        isDecimalClicked = false
+                        isPlus = true
+                    }
                 }
-                stack.pop()
             }
 
             "clear" -> {
@@ -294,20 +303,14 @@ class MainActivity : AppCompatActivity() {
 
             "plus_minus" -> {
                 if (stack.isNotEmpty()) {
-                    val stringValue = stack.joinToString("")
-                    if (stringValue != "0") {
-                        if (isPlus) {
-                            stack.clear()
-                            stack.push("-$stringValue")
-                            isPlus = false
-                        } else {
-                            if (stringValue.startsWith("-")) {
-                                stack.clear()
-                                stack.push(stringValue.substring(1))
-                            }
-                            isPlus = true
-                        }
+                    var firstValue = stack.first()
+
+                    if (firstValue == "-") {
+                        stack[0] = firstValue.substring(1)
+                    } else {
+                        stack.add(0, "-")
                     }
+                    isPlus = !isPlus
                 }
             }
         }
