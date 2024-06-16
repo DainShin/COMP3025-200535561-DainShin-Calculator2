@@ -9,13 +9,13 @@ import androidx.core.view.WindowInsetsCompat
 import com.dain.comp3025_200535561_dainshin_calculator2.databinding.ActivityMainBinding
 
 /**
- * File name: 200535561_DainShin_Calculator
+ * File name: 200535561_DainShin_Calculator2
  * Author's name: Dain Shin
  * Student ID: 200535561
- * Date: May 31st, 2024
+ * Date: June 16, 2024
  * App Description:
- * This is a basic calculator capable of performing four arithmetic operations. Four arithmetic operations on decimal points, percentages, positive and negative numbers are possible.
- * Version: Ver1.0
+ * This is a basic calculator capable of performing four arithmetic operations including BEDMAS
+ * Version: Ver2.0
  */
 
 class MainActivity : AppCompatActivity() {

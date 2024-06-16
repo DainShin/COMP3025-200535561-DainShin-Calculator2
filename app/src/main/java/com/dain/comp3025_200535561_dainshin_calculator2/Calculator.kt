@@ -5,6 +5,9 @@ import com.dain.comp3025_200535561_dainshin_calculator2.databinding.ActivityMain
 import java.util.Stack
 import java.text.DecimalFormat
 
+/**
+ *
+ */
 class Calculator(dataBinding: ActivityMainBinding) {
     val binding = dataBinding
     var isDecimalClicked = false
@@ -13,12 +16,15 @@ class Calculator(dataBinding: ActivityMainBinding) {
     var resultStack = Stack<String>()  // each value will be stored in this stack
     var stack = Stack<String>()   // the value  before an operator button is clicked
 
-    val eightDecimal = DecimalFormat("#.########")
+    var eightDecimal = DecimalFormat("#.########") // this is for representing 8 decimal places
 
     init {
         createButtonReferences()
     }
 
+    /**
+     * This function creates a list of buttons and calls the event handler corresponding to each button's functionality
+     */
     private fun createButtonReferences() {
         val operandButtons = arrayOf(
             binding.plusMinusButton, binding.deleteButton, binding.clearButton
@@ -49,7 +55,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
         val equalsButton = binding.equalsButton
         val percentButton = binding.percentButton
 
-        operandButtons.forEach { it.setOnClickListener { operandHandler(it.tag.toString()) } }
+        operandButtons.forEach { it.setOnClickListener { subOperatorHandler(it.tag.toString()) } }
         numberButtons.forEach { it.setOnClickListener { numberHandler(it.tag.toString()) } }
         operatorButtons.forEach { it.setOnClickListener { operatorHandler(it.tag.toString()) } }
         equalsButton.setOnClickListener { equalsHandler() }
@@ -57,6 +63,9 @@ class Calculator(dataBinding: ActivityMainBinding) {
 
     }
 
+    /**
+     * This function converts numbers into percentages.
+     */
     private fun percentHandler() {
         if(stack.isNotEmpty()) {
 
@@ -72,7 +81,9 @@ class Calculator(dataBinding: ActivityMainBinding) {
     }
 
 
-    // if equals button is clicked
+    /**
+     * When the equals button is clicked, it performs arithmetic operations according to priority
+     */
     private fun equalsHandler() {
 
         if (stack.isNotEmpty()) {
@@ -83,7 +94,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             stack.clear()
         }
 
-        //  * or /
+        //  looping over the stack and find multiply and division and calculate that part first
         var i = 0
         while (i < resultStack.size) {
             val operator = resultStack[i]
@@ -100,7 +111,6 @@ class Calculator(dataBinding: ActivityMainBinding) {
                     }
                 } else {
                     var resultVal = (resultStack[i - 1].toFloat() / resultStack[i + 1].toFloat())
-                    resultVal =  String.format("%.8f", resultVal).toFloat()
 
                     if (resultVal % 1.0 == 0.0) {
                         resultString = (resultVal.toInt()).toString()
@@ -119,7 +129,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             }
         }
 
-        // + or -
+        // after finishing multiply or division, this while loop will find plus and minus
         var j = 0
         while (j < resultStack.size) {
             val operator = resultStack[j]
@@ -142,11 +152,11 @@ class Calculator(dataBinding: ActivityMainBinding) {
                     }
                 }
 
-                resultStack[j - 1] = resultString
-                resultStack.removeAt(j)
-                resultStack.removeAt(j)
+                resultStack[j - 1] = resultString  // replace the first number with the result
+                resultStack.removeAt(j)  // remove + or -
+                resultStack.removeAt(j) // remove the second number
 
-                j--
+                j-- // adjust the index cause the index number has been changed
             } else {
                 j++
             }
@@ -161,21 +171,18 @@ class Calculator(dataBinding: ActivityMainBinding) {
 
     }
 
-    // numbers and operators will be in the stack
+    /**
+     * This function will be called when the operator buttons(plus, minus, multiply, division) are clicked
+     *
+     * @param {operator} [String]
+     */
     private fun operatorHandler(operator: String) {
-        // enter the number and press the operator
-        // -> copy stack value to resultStack
-        // -> empty stack
-
-        // copy stack value to resultStack
         if (stack.isNotEmpty()) {
             val resultString = stack.joinToString("")
             resultStack.push(resultString)
-            // empty stack
             isDecimalClicked = false
             stack.clear()
         }
-
 
         // if the previous value is an operator, call pop() and store the new operator
         if (resultStack.peek() == "+" || resultStack.peek() == "-" || resultStack.peek() == "*" || resultStack.peek() == "/") {
@@ -192,6 +199,11 @@ class Calculator(dataBinding: ActivityMainBinding) {
         updateProcessView()
     }
 
+    /**
+     * This function will be called when the number buttons are clicked
+     *
+     * @param {num} [String]
+     */
     private fun numberHandler(num: String) {
         if(stack.size < 11) {
             if (num == "." && isDecimalClicked) {
@@ -223,7 +235,12 @@ class Calculator(dataBinding: ActivityMainBinding) {
     }
 
 
-    private fun operandHandler(tag: String) {
+    /**
+     *This function will be called when delete, clear, plus minus buttons are clicked
+     *
+     *  @param {tag} [String]
+     */
+    private fun subOperatorHandler(tag: String) {
         when (tag) {
             "delete" -> {
                 if (binding.resultTextView.text == "0") {
@@ -262,7 +279,9 @@ class Calculator(dataBinding: ActivityMainBinding) {
         updateProcessView()
     }
 
-    // update result view screen
+    /**
+     * This function updates the result text view
+     */
     private fun updateResultView() {
         if (stack.isEmpty()) {
             binding.resultTextView.text = "0"
@@ -273,6 +292,9 @@ class Calculator(dataBinding: ActivityMainBinding) {
         }
     }
 
+    /**
+     * This function records the values including the operator before the equals button is clicked
+     */
     private fun updateProcessView() {
         binding.processTextView.text = resultStack.joinToString("")
     }
