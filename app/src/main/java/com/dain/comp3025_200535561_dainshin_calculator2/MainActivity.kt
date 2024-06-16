@@ -302,9 +302,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             "plus_minus" -> {
-                if (stack.isNotEmpty()) {
+                if (stack.isNotEmpty() && binding.resultTextView.text.toString() != "0") {
                     var firstValue = stack.first()
-
                     if (firstValue == "-") {
                         stack[0] = firstValue.substring(1)
                     } else {
