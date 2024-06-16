@@ -3,6 +3,7 @@ package com.dain.comp3025_200535561_dainshin_calculator2
 import android.util.Log
 import com.dain.comp3025_200535561_dainshin_calculator2.databinding.ActivityMainBinding
 import java.util.Stack
+import java.text.DecimalFormat
 
 class Calculator(dataBinding: ActivityMainBinding) {
     val binding = dataBinding
@@ -11,6 +12,8 @@ class Calculator(dataBinding: ActivityMainBinding) {
 
     var resultStack = Stack<String>()  // each value will be stored in this stack
     var stack = Stack<String>()   // the value  before an operator button is clicked
+
+    val eightDecimal = DecimalFormat("#.########")
 
     init {
         createButtonReferences()
@@ -40,7 +43,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             binding.minusButton,
             binding.divideButton,
             binding.multiplyButton,
-            //binding.percentButton
+
         )
 
         val equalsButton = binding.equalsButton
@@ -61,7 +64,7 @@ class Calculator(dataBinding: ActivityMainBinding) {
             val resultFloat = resultString.toFloat() * 0.01
 
             stack.clear()
-            stack.push(resultFloat.toString())
+            stack.push(eightDecimal.format(resultFloat).toString())
 
             updateResultView()
             updateProcessView()
@@ -93,15 +96,16 @@ class Calculator(dataBinding: ActivityMainBinding) {
                     if (resultVal % 1.0 == 0.0) {
                         resultString = (resultVal.toInt()).toString()
                     } else {
-                        resultString = resultVal.toString()
+                        resultString = eightDecimal.format(resultVal).toString()
                     }
                 } else {
                     var resultVal = (resultStack[i - 1].toFloat() / resultStack[i + 1].toFloat())
+                    resultVal =  String.format("%.8f", resultVal).toFloat()
 
                     if (resultVal % 1.0 == 0.0) {
                         resultString = (resultVal.toInt()).toString()
                     } else {
-                        resultString = resultVal.toString()
+                        resultString = eightDecimal.format(resultVal).toString()
                     }
                 }
 
@@ -127,14 +131,14 @@ class Calculator(dataBinding: ActivityMainBinding) {
                     resultString = if (resultVal % 1.0 == 0.0) {
                         resultVal.toInt().toString()
                     } else {
-                        resultVal.toString()
+                        eightDecimal.format(resultVal).toString()
                     }
                 } else {
                     val resultVal = resultStack[j - 1].toFloat() - resultStack[j + 1].toFloat()
                     resultString = if (resultVal % 1.0 == 0.0) {
                         resultVal.toInt().toString()
                     } else {
-                        resultVal.toString()
+                        eightDecimal.format(resultVal).toString()
                     }
                 }
 
@@ -274,63 +278,5 @@ class Calculator(dataBinding: ActivityMainBinding) {
     }
 
 }
-
-
-/*
-b. Write code in the Kotlin programming language that enables the backspace button to
-delete the last number entered. If all the numbers have been deleted, then they will be
-replaced by a zero. You will also have to create event handlers for the backspace Button
-control in the MainActivity (4 Marks Functionality). --> ok
-
-c. Write code in the Kotlin programming language that enables the plus/minus button to
-toggle the sign of the number displayed in the Result Label to plus or minus. The
-plus/minus button will have no effect on the number zero. You will also have to create
-event handler for the plus/minus Button control in the MainActivity (4 Marks:
-Functionality) --> ok (마지막 숫자 delete -> 0)
-
-d. Write code in the Kotlin programming language that enables the Operator Buttons
-(+, -, *, /, %) to work with the operands entered through the number buttons, the plus/minus
-button and the decimal point.
-When the Equals Button (=) is selected by the user, it performs the calculation between the operands and the operator selected.
-For example,
-in the expression 1 + 2 = 3 the left most operand is ‘1’ the operator is the ‘+’ and the
-right most operand is ‘2’. The value ‘3’ to the right of the equal symbol is the result of
-the ‘+’ operation. We can also see this as the addition function taking two parameters
-and returning the result. Write one or more evaluation functions to create this logic.
-(22 Marks: Functionality). --> ok
-
-
-
-f. Floating point numbers should be accurate to at least 8 decimal places. Integers should
-be represented as integers. This means if your calculation includes both floating point
-numbers and integers and the result is an integer your function should be flexible
-enough to remove any extraneous decimal precision (e.g. if your expression is 1.2 - 2.2
-this should evaluate to a value of -1 not -1.0). (5 Marks: Functionality). --> ok
-
-g. A Result Label or other Suitable UI Control displays the results of any calculation the
-user desires using the Number Buttons, Decimal point button and Operator Buttons.
-Your UI should limit the text entry to an appropriate value and not change the Text Size
-to suit a large operand or a result. (4 Marks: Functionality).
-
-h. Write code in the Kotlin Programming language that enables the Clear Button to Reset
-the Result Label to Zero. You will also have to create an event handler for the Clear
-Button control in the MainActivity (4 Marks: Functionality).  --> ok
-
-
-
-2. Include Internal Documentation for your program (6 Marks: Internal Documentation):
-a. Ensure you include a comment header for your MainActivity file that indicates: the
-File name, Author's name, StudentID, Date, App description, and Version information
-(3 Marks: Internal Documentation).
-*
-b. Ensure you include a comment header for each of your methods and classes (1 Marks:
-Internal Documentation)
-
-c. Ensure your program uses contextual variable names that help make the program
-human-readable (1 Marks: Internal Documentation).
-
-d. Ensure you include inline comments that describe your code’s functionality only where
-required (1 Marks: Internal Documentation)
-* */
 
 
