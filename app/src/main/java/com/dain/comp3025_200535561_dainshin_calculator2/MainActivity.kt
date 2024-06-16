@@ -293,19 +293,22 @@ class MainActivity : AppCompatActivity() {
             }
 
             "plus_minus" -> {
-                isPlus = !isPlus
-
                 if (stack.isNotEmpty()) {
                     val stringValue = stack.joinToString("")
-                    if (isPlus == false) {
-                        stack.clear()
-                        stack.push("-$stringValue")
-                    } else {
-                        stack.clear()
-                        stack.push(stringValue)
+                    if (stringValue != "0") {
+                        if (isPlus) {
+                            stack.clear()
+                            stack.push("-$stringValue")
+                            isPlus = false
+                        } else {
+                            if (stringValue.startsWith("-")) {
+                                stack.clear()
+                                stack.push(stringValue.substring(1))
+                            }
+                            isPlus = true
+                        }
                     }
                 }
-
             }
         }
         updateResultView()
