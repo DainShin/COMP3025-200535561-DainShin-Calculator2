@@ -102,10 +102,10 @@ class MainActivity : AppCompatActivity() {
         if (stack.isNotEmpty()) {
 
             val resultString = stack.joinToString("")
-            val resultFloat = resultString.toFloat() * 0.01
+            val resultDouble = resultString.toDouble() * 0.01
 
             stack.clear()
-            stack.push(eightDecimal.format(resultFloat).toString())
+            stack.push(eightDecimal.format(resultDouble).toString())
 
             updateResultView()
             updateProcessView()
@@ -135,16 +135,19 @@ class MainActivity : AppCompatActivity() {
 
                 if (operator == "*") {
                     var resultVal = resultStack[i - 1].toDouble() * resultStack[i + 1].toDouble()
-                    resultString = resultVal.toString()
+
+                    if (resultVal % 1.0 == 0.0) {
+                        resultString = (resultVal.toInt()).toString()
+                    } else {
+                        resultString = eightDecimal.format(resultVal).toString()
+                    }
                 } else {
                     var resultVal = resultStack[i - 1].toDouble() / resultStack[i + 1].toDouble()
-                    resultString = resultVal.toString()
-                }
-
-                if(resultString.toDouble() % 1.0 == 0.0) {
-                    resultString = resultString.toInt().toString()
-                } else {
-                    resultString = eightDecimal.format(resultString.toDouble()).toString()
+                    if (resultVal % 1.0 == 0.0) {
+                        resultString = (resultVal.toInt()).toString()
+                    } else {
+                        resultString = eightDecimal.format(resultVal).toString()
+                    }
                 }
 
                 resultStack[i - 1] = resultString
@@ -166,17 +169,19 @@ class MainActivity : AppCompatActivity() {
 
                 if (operator == "+") {
                     val resultVal = resultStack[j - 1].toDouble() + resultStack[j + 1].toDouble()
-                    resultString = resultVal.toString()
+                    if (resultVal % 1.0 == 0.0) {
+                        resultString = (resultVal.toInt()).toString()
+                    } else {
+                        resultString = eightDecimal.format(resultVal).toString()
+                    }
 
                 } else {
                     val resultVal = resultStack[j - 1].toDouble() - resultStack[j + 1].toDouble()
-                    resultString = resultVal.toString()
-                }
-
-                if(resultString.toDouble() % 1.0 == 0.0) {
-                    resultString = resultString.toInt().toString()
-                } else {
-                    resultString = eightDecimal.format(resultString.toDouble()).toString()
+                    if (resultVal % 1.0 == 0.0) {
+                        resultString = (resultVal.toInt()).toString()
+                    } else {
+                        resultString = eightDecimal.format(resultVal).toString()
+                    }
                 }
 
                 resultStack[j - 1] = resultString  // replace the first number with the result
