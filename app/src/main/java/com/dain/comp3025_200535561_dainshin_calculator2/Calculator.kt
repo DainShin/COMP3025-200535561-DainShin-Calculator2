@@ -6,7 +6,9 @@ import java.util.Stack
 import java.text.DecimalFormat
 
 /**
+ * This Calculator class performs  four arithmetic operations including BEDMAS
  *
+ * @param {dataBinding} [ActivityMainBinding]
  */
 class Calculator(dataBinding: ActivityMainBinding) {
     val binding = dataBinding
